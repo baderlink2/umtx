@@ -67,7 +67,7 @@ const payload_map = [
     {
         displayTitle: "kstuff Only V1.2",
         description: "FPKG enabler",
-        fileName: "kstuff.elf",
+        fileName: "etahne_kstufff5.xx",
         author: "sleirsgoevy, john-tornblom, EchoStretch, buzzer-re, BestPig, LightningMods, zecoxao",
         projectSource: "https://github.com/EchoStretch/kstuff",
         binarySource: "https://github.com/EchoStretch/kstuff/releases/download/5xx-support-v1/kstuff.elf",
