@@ -1,6 +1,6 @@
 // Función para mostrar un popup
 function mostrarPopup() {
-    const url = prompt("🌐​ Please enter the URL:", "https://es7in1.site/ps5/index.php");
+    const url = prompt("🌐​ Please enter the URL:", "https://www.bing.com");
 
     if (url) {
         // Abre la URL en una nueva pestaña o ventana
