@@ -13,6 +13,11 @@
 }
 
 body {
+        flex-direction: column;
+    background: url(img/bader.png) no-repeat center center fixed;
+    background-size: cover;
+    color: #fff;
+    font-family: sans-serif;
     user-select: none;
     -webkit-user-select: none;
     background-color: var(--background-color-primary);
@@ -101,6 +106,9 @@ a:focus {
 
 #payloads-view .btn {
     width: 100% !important;
+	    background-image: url(logo/click.png);
+    background-size: 64px 64px;
+    background-repeat: no-repeat;
 }
 
 .payload-btn-title {
