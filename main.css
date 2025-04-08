@@ -13,7 +13,7 @@
 
 body {
         flex-direction: column;
-    background: url(logo/bader.png) no-repeat center center fixed;
+    background: url(logo/bader2.png) no-repeat center center fixed;
     background-size: cover;
     color: #fff;
     font-family: sans-serif;
@@ -105,7 +105,7 @@ a:focus {
 
 #payloads-view .btn {
     width: 100% !important;
-    background-image: url(logo/click.png);
+    background-image: url(logo/click2.png);
     background-size: 64px 64px;
     background-repeat: no-repeat;
 }
