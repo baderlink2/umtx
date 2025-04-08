@@ -48,7 +48,7 @@ a:focus {
 }
 
 
-.btn {
+. {
     padding: 1rem 2rem;
     text-align: center;
     text-decoration: none;
@@ -67,7 +67,7 @@ a:focus {
     box-sizing: border-box;
 }
 
-.btn:hover {
+.:hover {
     background-color: var(--surface-color-hover);
     color: var(--text-color-primary-hover);
 }
@@ -104,14 +104,14 @@ a:focus {
     align-content: start;
 }
 
-#payloads-view .btn {
+#payloads-view . {
     width: 100% !important;
 	    background-image: url(logo/click.png);
     background-size: 64px 64px;
     background-repeat: no-repeat;
 }
 
-.payload-btn-title {
+.payload--title {
     line-height: 2.5rem;
     font-weight: bolder;
     font-size: 1.3rem;
@@ -119,7 +119,7 @@ a:focus {
     margin: 0;
 }
 
-.payload-btn-description {
+.payload--description {
     color: var(--text-color-secondary);
     margin: 0;
     padding: 0;
@@ -131,11 +131,11 @@ a:focus {
     max-width: 100%;
 }
 
-.btn:hover p.payload-btn-description {
+.:hover p.payload--description {
     color: var(--text-color-secondary-hover);
 }
 
-.payload-btn-info {
+.payload--info {
     color: var(--text-color-tertiary);
     margin: 0;
     padding: 0;
@@ -149,7 +149,7 @@ a:focus {
     -webkit-box-orient: vertical;
 }
 
-.btn:hover p.payload-btn-info {
+.:hover p.payload--info {
     color: var(--text-color-tertiary-hover);
 }
 
