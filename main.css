@@ -14,7 +14,7 @@
 
 body {
         flex-direction: column;
-    background: url(img/bader.png) no-repeat center center fixed;
+    background: url(logo/bader.png) no-repeat center center fixed;
     background-size: cover;
     color: #fff;
     font-family: sans-serif;
