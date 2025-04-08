@@ -67,7 +67,7 @@ a:focus {
     box-sizing: border-box;
 }
 
-.btn:hover {
+.:hover {
     background-color: var(--surface-color-hover);
     color: var(--text-color-primary-hover);
 }
