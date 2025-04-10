@@ -55,7 +55,7 @@ const payload_map = [
     },
     {
         displayTitle: "Etahen+Kstuff NEW Last", 
-        description: "For 5.50",
+        description: "For 5.10",
         fileName: "etahen550.bin",
         author: "LightningMods Date 30-03-2025",
         projectSource: "https://github.com/LightningMods/etaHEN",
@@ -87,7 +87,7 @@ const payload_map = [
     },
     {
         displayTitle: "Etahen+Kstuff NEW last", 
-        description: "For 5.10",
+        description: "For 5.50",
         fileName: "etahen510.bin",
         author: "LightningMods Date 30-03-2025",
         projectSource: "https://github.com/LightningMods/etaHEN",
