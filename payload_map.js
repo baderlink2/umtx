@@ -41,10 +41,10 @@ const payload_map = [
         toPort: 9021
     },
     {
-        displayTitle: "ETAHEN 2.1B TEST BADERLINK",
-        description: "ETAHEN 2.1B",
-        fileName: "kstuff.bin",
-        author: "BETA ETAHEN TESTED",
+        displayTitle: "KSTUFF FIX BYPASS",
+        description: "FPKG PS4 OPEN",
+        fileName: "kstuff.elf",
+        author: "FOR 1.XX TO 5.XX",
         projectSource: "https://github.com/EchoStretch/kstuff",
         binarySource: "https://github.com/EchoStretch/kstuff/releases/download/v1.3/kstuff.elf",
         version: "2.1B",
