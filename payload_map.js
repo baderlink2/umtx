@@ -43,7 +43,7 @@ const payload_map = [
     {
         displayTitle: "ETAHEN 2.1B TEST BADERLINK",
         description: "ETAHEN 2.1B",
-        fileName: "kstuff.elf",
+        fileName: "kstuff.bin",
         author: "BETA ETAHEN TESTED",
         projectSource: "https://github.com/EchoStretch/kstuff",
         binarySource: "https://github.com/EchoStretch/kstuff/releases/download/v1.3/kstuff.elf",
