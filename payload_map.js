@@ -41,13 +41,13 @@ const payload_map = [
         toPort: 9021
     },
     {
-        displayTitle: "POC BETA TEST EXOLOIT",
-        description: "POC EXPLOIT TES",
+        displayTitle: "ETAHEN 2.1B TEST BADERLINK",
+        description: "ETAHEN 2.1B",
         fileName: "kstuff.elf",
-        author: "zecoxao TESTED",
+        author: "BETA ETAHEN TESTED",
         projectSource: "https://github.com/EchoStretch/kstuff",
         binarySource: "https://github.com/EchoStretch/kstuff/releases/download/v1.3/kstuff.elf",
-        version: "1.3",
+        version: "2.1B",
         supportedFirmwares: ["3.", "4.", "5."],
         toPort: 9021
     },
