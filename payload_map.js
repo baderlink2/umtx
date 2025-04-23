@@ -42,9 +42,9 @@ const payload_map = [
     },
     {
         displayTitle: "POC BETA TEST EXOLOIT",
-        description: "FPKG PS4",
+        description: "POC EXPLOIT TES",
         fileName: "kstuff.elf",
-        author: "sleirsgoevy, john-tornblom, EchoStretch, buzzer-re, BestPig, LightningMods, zecoxao",
+        author: "zecoxao TESTED",
         projectSource: "https://github.com/EchoStretch/kstuff",
         binarySource: "https://github.com/EchoStretch/kstuff/releases/download/v1.3/kstuff.elf",
         version: "1.3",
