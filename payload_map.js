@@ -37,7 +37,7 @@ const payload_map = [
         author: "LightningMods Date 30-03-2025",
         projectSource: "https://github.com/etaHEN/etaHEN",
         binarySource: "https://github.com/etaHEN/etaHEN/blob/360e7c0d2dddf4f4645599d51d652e707c0b717b/etaHEN-2.0b.bin",
-        version: "2.0b",
+        version: "2.1B",
         toPort: 9021
     },
     {
