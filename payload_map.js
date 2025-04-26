@@ -31,13 +31,13 @@ const payload_map = [
     //     supportedFirmwares: ["1.", "2.", "3.", "4.", "5."]
     // },
     {
-        displayTitle: "4.XX TEST V2.1B",
-        description: "FOR 1.XX TO 5.XX",
+        displayTitle: "ETAHEN+Kstuff V2.1",
+        description: "FOR 5.XX",
         fileName: "etaHEN.bin",
-        author: "LightningMods Date 30-03-2025",
+        author: "LightningMods Date 26-04-2025",
         projectSource: "https://github.com/etaHEN/etaHEN",
         binarySource: "https://github.com/etaHEN/etaHEN/blob/360e7c0d2dddf4f4645599d51d652e707c0b717b/etaHEN-2.0b.bin",
-        version: "2.1B",
+        version: "2.1",
         toPort: 9021
     },
     {
