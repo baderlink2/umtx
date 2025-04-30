@@ -1,13 +1,13 @@
 :root{
     --text-color-primary: #ffffff; /* White */
-    --text-color-secondary: #e1e1e1; /* Light Grey */
-    --text-color-tertiary: #aaaaaa; /* Medium Grey */
-    --background-color-primary: #1f1f1f; /* Dark Grey */
-    --surface-color-primary: #0070d1; /* PS5 Blue */
-    --surface-color-secondary: #333333; /* Darker Surface for Toast */
-    --surface-color-hover: #0084f3; /* Lighter PS5 Blue */
-    --text-color-primary-hover: #ffffff; /* White */
-    --text-color-secondary-hover: #e1e1e1; /* Light Grey */
+    --text-color-secondary: #a0a0ff; /* Light Neon Blue/Purple */
+    --text-color-tertiary: #606080; /* Darker Muted Purple/Blue */
+    --background-color-primary: #0a0a1a; /* Very Dark Blue/Purple */
+    --surface-color-primary: #00ffff; /* Cyan Neon */
+    --surface-color-secondary: #1a1a2a; /* Darker Surface */
+    --surface-color-hover: #80ffff; /* Lighter Cyan Neon */
+    --text-color-primary-hover: #0a0a1a; /* Dark Background for text on hover */
+    --text-color-secondary-hover: #a0a0ff; /* Light Neon Blue/Purple */
 
     font-size: 17px;
 }
@@ -58,19 +58,22 @@ a:focus {
     cursor: pointer;
     line-height: 2.5rem;
     min-width: 5rem;
-    border-radius: 0.5rem; /* Reduced border-radius for PS5 style */
+    border-radius: 0.5rem; /* Keep reduced border-radius */
     width: 50%;
     background-color: var(--surface-color-primary);
-    border: none;
+    border: 1px solid var(--surface-color-primary); /* Add border for neon effect */
     color: var(--text-color-primary);
     font-size: 1.3rem;
-    transition: background-color 0.25s ease;
+    transition: background-color 0.25s ease, box-shadow 0.25s ease; /* Add transition for shadow */
     box-sizing: border-box;
+    box-shadow: 0 0 5px var(--surface-color-primary), 0 0 10px var(--surface-color-primary); /* Neon glow effect */
 }
 
 .btn:hover {
     background-color: var(--surface-color-hover);
     color: var(--text-color-primary-hover);
+    border-color: var(--surface-color-hover); /* Change border color on hover */
+    box-shadow: 0 0 10px var(--surface-color-hover), 0 0 15px var(--surface-color-hover); /* Intensify glow on hover */
 }
 
 

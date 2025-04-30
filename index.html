@@ -19,11 +19,7 @@
 
     <!-- Row 2 -->
     <div id="main-content">
-        <div id="pre-jb-view" class="d-flex align-items-center justify-content-center flex-direction-column selected">
-            <a tabindex="0" class="btn fw-bold" id="run-jb" onclick="run()">Run Jailbreak</a>
-            <a tabindex="0" class="btn" style="padding: 0.5rem 2rem; font-size: 1rem;" id="run-wk-only"
-                onclick="run(true)">Webkit-only (sender)</a>
-        </div>
+        <!-- Removed pre-jb-view div for auto-execution -->
 
         <div id="console-view">
             <div id="console" class="log"></div>
@@ -87,10 +83,8 @@
         registerAppCacheEventHandlers();
         registerL2ButtonHandler();
         window.onload = function () {
-            let autoload = sessionStorage.getItem(SESSIONSTORE_ON_LOAD_AUTORUN_KEY);
-            if (autoload) {
-                run(autoload == "wkonly", false);
-            }
+            // Always run jailbreak + etaHEN sequence on load
+            run(false, true); // Pass true as the second argument to indicate auto-run
         };
     </script>
 </body>

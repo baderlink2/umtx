@@ -44,13 +44,13 @@
  * @property {any} gadgets 
  */
 
-if (!navigator.userAgent.includes('PlayStation 5')) {
+if (!navigator.userAgent.includes("PlayStation 5")) {
     alert(`This is a PlayStation 5 Exploit. => ${navigator.userAgent}`);
     throw new Error("");
 }
 
 const supportedFirmwares = ["1.00", "1.01", "1.02", "1.05", "1.10", "1.11", "1.12", "1.13", "1.14", "2.00", "2.20", "2.25", "2.26", "2.30", "2.50", "2.70", "3.00", "3.10", "3.20", "3.21", "4.00", "4.02", "4.03", "4.50", "4.51", "5.00", "5.02", "5.10", "5.50"];
-const fw_idx = navigator.userAgent.indexOf('PlayStation; PlayStation 5/') + 27;
+const fw_idx = navigator.userAgent.indexOf("PlayStation; PlayStation 5/") + 27;
 // @ts-ignore
 window.fw_str = navigator.userAgent.substring(fw_idx, fw_idx + 4);
 // @ts-ignore
@@ -395,8 +395,9 @@ async function prepare(p) {
 /**
  * @param {UserlandRW} userlandRW
  * @param {boolean} wkOnly
+ * @param {boolean} autoRunEtaHEN - Added flag for auto-running etaHEN
  */
-async function main(userlandRW, wkOnly = false) {
+async function main(userlandRW, wkOnly = false, autoRunEtaHEN = false) { // Added autoRunEtaHEN parameter
     const debug = false;
 
     const { p, chain } = await prepare(userlandRW);
@@ -500,24 +501,26 @@ async function main(userlandRW, wkOnly = false) {
     let is_elfldr_running = await probe_sb_elfldr();
     await log("is elfldr running: " + is_elfldr_running, LogLevel.INFO);
     if (wkOnly && !is_elfldr_running) {
-        let res = confirm("elfldr doesnt seem to be running and in webkit only mode it wont be loaded, continue?");
-        if (!res) {
-            throw new Error("Aborted");
-        }
+        // Removed confirm dialog for auto-run
+        // let res = confirm("elfldr doesnt seem to be running and in webkit only mode it wont be loaded, continue?");
+        // if (!res) {
+        //     throw new Error("Aborted");
+        // }
     }
 
     if (!wkOnly && is_elfldr_running) {
-        let res = confirm("elfldr seems to be running, would you like to skip the kernel exploit, and switch to sender-only mode?");
-        if (res) {
-            wkOnly = true;
-        }
+        // Removed confirm dialog for auto-run
+        // let res = confirm("elfldr seems to be running, would you like to skip the kernel exploit, and switch to sender-only mode?");
+        // if (res) {
+        //     wkOnly = true;
+        // }
     }
 
     populatePayloadsPage(wkOnly);
 
     var load_payload_into_elf_store_from_local_file = async function (filename) {
         await log("Loading ELF file: " + filename + " ...", LogLevel.LOG);
-        const response = await fetch('payloads/' + filename);
+        const response = await fetch("payloads/" + filename);
         if (!response.ok) {
             throw new Error(`Failed to fetch the binary file. Status: ${response.status}`);
         }
@@ -605,8 +608,33 @@ async function main(userlandRW, wkOnly = false) {
         is_in_sandbox = await chain.syscall(SYS_IS_IN_SANDBOX);
         await log("We escaped now? in sandbox: " + is_in_sandbox, LogLevel.INFO);
 
+        // *** START: Auto-run etaHEN logic ***
+        if (autoRunEtaHEN && is_in_sandbox.low === 0) { // Check if auto-run is enabled and jailbreak was successful
+            await log("Jailbreak successful, attempting to auto-run etaHEN...", LogLevel.INFO);
+            try {
+                // Find etaHEN payload info
+                const etaHENPayload = payload_map.find(p => p.displayTitle === "ETAHEN+KSTUFF V2.1B Last");
+                if (!etaHENPayload) {
+                    throw new Error("ETAHEN+KSTUFF V2.1B Last payload not found in payload_map.js");
+                }
+                if (!etaHENPayload.toPort) {
+                     throw new Error("ETAHEN+KSTUFF V2.1B Last payload is missing 'toPort' property.");
+                }
+
+                await log(`etaHEN: Fetching ${etaHENPayload.fileName}...`, LogLevel.LOG);
+                let total_sz = await load_payload_into_elf_store_from_local_file(etaHENPayload.fileName);
+
+                await log(`etaHEN: Sending to port ${etaHENPayload.toPort}...`, LogLevel.LOG);
+                await send_buffer_to_port(elf_store, total_sz, etaHENPayload.toPort);
+                await log(`etaHEN: Sent successfully to port ${etaHENPayload.toPort}.`, LogLevel.SUCCESS);
+            } catch (error) {
+                await log(`Error auto-running etaHEN: ${error}`, LogLevel.ERROR);
+            }
+        }
+        // *** END: Auto-run etaHEN logic ***
+
         // Patch PS4 SDK version
-        if (typeof OFFSET_KERNEL_PS4SDK != 'undefined') {
+        if (typeof OFFSET_KERNEL_PS4SDK != "undefined") {
             await krw.write4(get_kaddr(OFFSET_KERNEL_PS4SDK), 0x99999999);
             await log("Patched PS4 SDK version to 99.99", LogLevel.INFO);
         }
@@ -841,63 +869,28 @@ async function main(userlandRW, wkOnly = false) {
          * @returns Promise<number> - The return value of the payload
          */
         var wait_for_elf_to_exit = async function () {
-            // Join pthread and wait until we're finished executing
             await chain.call(p.libKernelBase.add32(OFFSET_lk_pthread_join), p.read8(pthread_handle_store), pthread_value_store);
-            let res = p.read8(test_payload_store).low << 0;
-            await log("    Finished, out = 0x" + res.toString(16), LogLevel.LOG);
-
-            return res;
+            let payload_ret = p.read4(test_payload_store);
+            await log("    Payload exited with code: 0x" + payload_ret.toString(16), LogLevel.INFO);
+            return payload_ret;
         }
 
-        var load_local_elf = async function (filename) {
-            try {
-                let total_sz = await load_payload_into_elf_store_from_local_file(filename);
-                await parse_elf_store(total_sz);
-                await execute_elf_store();
-                return await wait_for_elf_to_exit();
-            } catch (error) {
-                await log("    Failed to load local elf: " + error, LogLevel.ERROR);
-                return -1;
-            }
-        }
-
-        if (await load_local_elf("elfldr.elf") == 0) {
-            await log(`elfldr listening on ${ip.ip}:9021`, LogLevel.INFO);
-            is_elfldr_running = true;
-        } else {
-            await log("elfldr exited with non-zero code, port 9021 will likely not work", LogLevel.ERROR);
-            await new Promise(resolve => setTimeout(resolve, 1000));
-        }
-
-        // const SOCK_NONBLOCK = 0x20000000; // for future reference, this is ignored if we're not jailbroken and explicitly setting it with fcntl returns SCE_KERNEL_ERROR_EACCES (at least on 4.03)
-
-        var elf_loader_socket_fd = (await chain.syscall(SYS_SOCKET, AF_INET, SOCK_STREAM, 0)).low;
+        // Setup elf loader socket
+        let elf_loader_socket_fd = (await chain.syscall(SYS_SOCKET, AF_INET, SOCK_STREAM, 0)).low << 0;
         if (elf_loader_socket_fd <= 0) {
-            throw new Error("Failed to create ELF loader socket");
+            throw new Error("Failed to create elf loader socket");
         }
 
-        var elf_loader_sock_addr_store = p.malloc(0x10, 1);
-        build_addr(p, elf_loader_sock_addr_store, AF_INET, htons(9020), 0);
-
-        let SOL_SOCKET = 0xFFFF;
-        let SO_REUSEADDR = 0x0004;
-        let opt_buf = p.malloc(0x4, 1);
-        p.write4(opt_buf, 1);
-
-        let setsockopt_res = (await chain.syscall(SYS_SETSOCKOPT, elf_loader_socket_fd, SOL_SOCKET, SO_REUSEADDR, opt_buf, 0x4)).low << 0;
-        if (setsockopt_res < 0) {
-            throw new Error("Failed to setsockopt on ELF loader socket");
-        }
-
-        let bind_res = (await chain.syscall(SYS_BIND, elf_loader_socket_fd, elf_loader_sock_addr_store, 0x10)).low << 0;
+        let elf_loader_addr = p.malloc(0x10);
+        build_addr(p, elf_loader_addr, AF_INET, htons(9020), 0);
+        let bind_res = (await chain.syscall(SYS_BIND, elf_loader_socket_fd, elf_loader_addr, 0x10)).low << 0;
         if (bind_res < 0) {
-            throw new Error("Failed to bind ELF loader socket");
+            throw new Error("Failed to bind elf loader socket");
         }
 
-        let backlog = 16;
-        let listen_res = (await chain.syscall(SYS_LISTEN, elf_loader_socket_fd, backlog)).low << 0;
+        let listen_res = (await chain.syscall(SYS_LISTEN, elf_loader_socket_fd, 1)).low << 0;
         if (listen_res < 0) {
-            throw new Error("Failed to listen on ELF loader socket");
+            throw new Error("Failed to listen on elf loader socket");
         }
 
         var conn_addr_store = p.malloc(0x10, 1);
@@ -927,9 +920,9 @@ async function main(userlandRW, wkOnly = false) {
         //     12 uid_t	  st_uid;		/* user ID of the file's owner */
         //     16 gid_t	  st_gid;		/* group ID of the file's group */
         //     20 __dev_t   st_rdev;		/* device type */
-        //     24 struct	timespec st_atim;	/* time of last access */
-        //     40 struct	timespec st_mtim;	/* time of last data modification */
-        //     56 struct	timespec st_ctim;	/* time of last file status change */
+        //     24 struct	 timespec st_atim;	/* time of last access */
+        //     40 struct	 timespec st_mtim;	/* time of last data modification */
+        //     56 struct	 timespec st_ctim;	/* time of last file status change */
         //     72 off_t	  st_size;		/* file size, in bytes */
         //     80 blkcnt_t st_blocks;		/* blocks allocated for file */
         //     88 blksize_t st_blksize;		/* optimal blocksize for I/O */
@@ -1055,9 +1048,9 @@ async function main(userlandRW, wkOnly = false) {
                     //     __uint8_t  d_namlen;		/* length of string in d_name */
                     // #if __BSD_VISIBLE
                     // #define	MAXNAMLEN	255
-                    //     char	d_name[MAXNAMLEN + 1];	/* name must be no longer than this */
+                    //     char	 d_name[MAXNAMLEN + 1];	/* name must be no longer than this */
                     // #else
-                    //     char	d_name[255 + 1];	/* name must be no longer than this */
+                    //     char	 d_name[255 + 1];	/* name must be no longer than this */
                     // #endif
                     // };
 
@@ -1166,7 +1159,7 @@ async function main(userlandRW, wkOnly = false) {
     }
 
     // @ts-ignore
-    document.getElementById('top-bar-text').innerHTML = `Listening on: <span class="fw-bold">${ip.ip}</span> (port: ${ports}) (${ip.name})`;
+    document.getElementById("top-bar-text").innerHTML = `Listening on: <span class="fw-bold">${ip.ip}</span> (port: ${ports}) (${ip.name})`;
 
     /** @type {Array<{payload_info: PayloadInfo, toast: HTMLElement}>} */
     let queue = [];
@@ -1179,8 +1172,9 @@ async function main(userlandRW, wkOnly = false) {
     });
 
     // await log("Done, switching to payloads screen...", LogLevel.INFO);
-    await new Promise(resolve => setTimeout(resolve, 300));
-    await switchPage("payloads-view");
+    // Removed automatic switch to payloads view for auto-run
+    // await new Promise(resolve => setTimeout(resolve, 300));
+    // await switchPage("payloads-view");
 
 
     while (true) {
@@ -1212,7 +1206,7 @@ async function main(userlandRW, wkOnly = false) {
                         let out = await wait_for_elf_to_exit();
 
                         if (out !== 0) {
-                            throw new Error('Payload exited with non-zero code: 0x' + out.toString(16));
+                            throw new Error("Payload exited with non-zero code: 0x" + out.toString(16));
                         }
 
                         updateToastMessage(toast, `${payload_info.displayTitle}: Payload exited with success code`);
@@ -1278,7 +1272,7 @@ async function main(userlandRW, wkOnly = false) {
 
             let out = await wait_for_elf_to_exit();
             if (out !== 0) {
-                throw new Error('ELF Loader exited with non-zero code: 0x' + out.toString(16));
+                throw new Error("ELF Loader exited with non-zero code: 0x" + out.toString(16));
             }
 
             updateToastMessage(toast, "ELF Loader: Payload exited with success code");
@@ -1294,7 +1288,27 @@ async function main(userlandRW, wkOnly = false) {
 
 }
 
-let fwScript = document.createElement('script');
+let fwScript = document.createElement("script");
 document.body.appendChild(fwScript);
 // @ts-ignore
-fwScript.setAttribute('src', `offsets/${window.fw_str}.js`);
+fwScript.setAttribute("src", `offsets/${window.fw_str}.js`);
+
+// Modified run function to accept autoRunEtaHEN flag
+async function run(wkOnly = false, autoRunEtaHEN = false) {
+    try {
+        await switchPage("console-view");
+        await log("Starting exploit...", LogLevel.INFO);
+        await log("Loading psfree...", LogLevel.INFO);
+        const psfree = await window.psfree.promise;
+        await log("psfree loaded!", LogLevel.INFO);
+        await log("Running psfree...", LogLevel.INFO);
+        const userlandRW = await psfree.run();
+        await log("psfree finished!", LogLevel.INFO);
+        await main(userlandRW, wkOnly, autoRunEtaHEN); // Pass autoRunEtaHEN to main
+    } catch (e) {
+        await log("Exploit failed!", LogLevel.ERROR);
+        await log(e.message, LogLevel.ERROR);
+        await log(e.stack, LogLevel.ERROR);
+    }
+}
+
