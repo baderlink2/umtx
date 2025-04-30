@@ -23,9 +23,16 @@
 
   <!-- BADERLINK Header -->
   <header class="text-center py-6 bg-gray-800 shadow-md fade-in">
-        <h1 class="text-center">OFFLINE Jailbreak UMTX V2 -1.XX-5.XX</h1>
-        <p class="text-center" id="top-bar-text">Current firmware: <span class="fw-bold" id="current-fw"></span></p>
+    <h1 class="text-4xl font-bold tracking-wide text-blue-400">BADERLINK</h1>
+    <p class="text-sm text-gray-400 mt-1">Jailbreak Tool for Firmware 1.XX - 5.XX</p>
+  </header>
 
+  <!-- Main Content -->
+  <main class="flex-grow flex flex-col items-center justify-center p-6 space-y-6 fade-in">
+    <div class="text-center">
+      <h2 class="text-2xl font-semibold">Current Status:</h2>
+      <p class="mt-2 text-lg">Firmware: <span id="current-fw" class="font-bold text-green-400"></span></p>
+    </div>
         <!-- This is absolute positioned to the body-->
         <div id="toast-container"></div>
     </div>
@@ -84,36 +91,18 @@
     <script src="payload_map.js"></script>
 
     <script>
-    function playSoundAndRun(wkonly = false) {
-      document.getElementById('beep-sound').play();
-      run(wkonly);
-    }
-
-    addEventListener('unhandledrejection', (event) => {
-      alert(`${event.reason}\n${event.reason.sourceURL}:${event.reason.line}:${event.reason.column}\n${event.reason.stack}`);
-      throw event.reason;
-    });
-
-    document.getElementById("current-fw").innerHTML = fw_str;
-    registerAppCacheEventHandlers();
-    registerL2ButtonHandler();
-
-    window.onload = function () {
-      let autoload = sessionStorage.getItem(SESSIONSTORE_ON_LOAD_AUTORUN_KEY);
-      if (autoload) {
-        playSoundAndRun(autoload == "wkonly");
-      }
-    };
-  </script>
-</body>
-</html>Item(SESSIONSTORE_ON_LOAD_AUTORUN_KEY);
-      if (autoload) {
-        playSoundAndRun(autoload == "wkonly");
-      }
-    };
-  </script>
-</body>
-</html>;
+        addEventListener('unhandledrejection', (event) => {
+            const reason = event.reason;
+            // We log the line and column numbers as well since some exceptions (like
+            // SyntaxError) do not show it in the stack trace.
+            alert(
+                `${reason}\n`
+                + `${reason.sourceURL}:${reason.line}:${reason.column}\n`
+                + `${reason.stack}`
+            );
+            throw reason;
+        });
+        document.getElementById("current-fw").innerHTML = fw_str;
         registerAppCacheEventHandlers();
         registerL2ButtonHandler();
         window.onload = function () {
