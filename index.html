@@ -23,45 +23,67 @@
 
   <!-- BADERLINK Header -->
   <header class="text-center py-6 bg-gray-800 shadow-md fade-in">
-    <h1 class="text-4xl font-bold tracking-wide text-blue-400">BADERLINK</h1>
-    <p class="text-sm text-gray-400 mt-1">Jailbreak Tool for Firmware 1.XX - 5.XX</p>
-  </header>
+        <h1 class="text-center">OFFLINE Jailbreak UMTX V2 -1.XX-5.XX</h1>
+        <p class="text-center" id="top-bar-text">Current firmware: <span class="fw-bold" id="current-fw"></span></p>
 
-  <!-- Main Content -->
-  <main class="flex-grow flex flex-col items-center justify-center p-6 space-y-6 fade-in">
-    <div class="text-center">
-      <h2 class="text-2xl font-semibold">Current Status:</h2>
-      <p class="mt-2 text-lg">Firmware: <span id="current-fw" class="font-bold text-green-400"></span></p>
+        <!-- This is absolute positioned to the body-->
+        <div id="toast-container"></div>
     </div>
 
-    <div class="space-y-4 fade-in">
-      <button id="run-jb" onclick="playSoundAndRun()" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold transition duration-300 shadow-md hover:scale-105">Run Jailbreak</button>
-      <button id="run-wk-only" onclick="playSoundAndRun(true)" class="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg text-white transition duration-300 shadow-md hover:scale-105">WebKit Only (Sender)</button>
+    <!-- Row 2 -->
+    <div id="main-content">
+        <div id="pre-jb-view" class="d-flex align-items-center justify-content-center flex-direction-column selected">
+            <a tabindex="0" class="btn fw-bold" id="run-jb" onclick="run()">Run Jailbreak</a>
+            <a tabindex="0" class="btn" style="padding: 0.5rem 2rem; font-size: 1rem;" id="run-wk-only"
+                onclick="run(true)">Webkit-only (sender)</a>
+        </div>
+
+        <div id="console-view">
+            <div id="console" class="log"></div>
+        </div>
+
+        <div id="payloads-view">
+        </div>
     </div>
 
-    <div id="console" class="w-full max-w-xl bg-black text-green-400 p-4 rounded-lg mt-6 font-mono text-sm overflow-y-auto h-40 fade-in shadow-inner"></div>
-  </main>
+    <!-- Row 3 -->
+    <div class="position-relative text-center p-2 mb-2">
+        <p class="text-secondary" id="version">v1.0</p>
+        <p class="text-secondary">creds & greetz</p>
+        <h3 class="text-secondary mt-2">
+            <a href="https://github.com/shahrilnet">@shahrilnet</a>,
+            <a href="https://github.com/n0llptr">@n0llptr</a>,
+            <a href="https://x.com/fail0verflow">@fail0verflow</a>,
+            <a href="https://twitter.com/flat_z">@flat_z</a>,
+            <a href="https://twitter.com/SpecterDev">@SpecterDev</a>,
+            ChendoChap,
+            SlidyBat,
+            abc/psfree,
+            <br />
+            idlesauce,
+            <a href="https://x.com/znullptr">@znullptr</a>,
+            <a href="https://twitter.com/notnotzecoxao">@notnotzecoxao</a>,
+            <a href="https://twitter.com/SocraticBliss">@SocraticBliss</a>,
+            <a href="https://github.com/john-tornblom">John Tornblom</a>,
+            <a href="https://discord.gg/kbrzGuH3F6">PS5 R&D Discord</a>
+        </h3>
 
-  <!-- Footer -->
-  <footer class="text-center py-6 bg-gray-800 text-gray-400 text-sm fade-in">
-    <p>Version: v1.0</p>
-    <p>Credits to all developers and contributors</p>
-  </footer>
+        <div class="position-absolute d-flex align-items-center bottom-0 left-0 m-4">
+            <div class="l2-redirect-box">L2</div>
+            <span class="ml-2">Redirect</span>
+        </div>
+    </div>
 
-  <!-- Scripts -->
-  <script src="int64.js"></script>
-  <script src="rop.js"></script>
-  <script src="main.js"></script>
-  <script src="umtx2.js"></script>
-  <script src="custom_host_stuff.js"></script>
-  <script src="syscalls.js"></script>
-  <script type="module" src="psfree/psfree.js"></script>
-  <script src="payload_map.js"></script>
+    <script src="int64.js"></script>
+    <script src="rop.js"></script>
+    <script src="main.js"></script>
+    <script src="umtx2.js"></script>
+    <script src="custom_host_stuff.js"></script>
+    <script src="syscalls.js"></script>
+    <script type="module" src="psfree/psfree.js"></script>
+    <script src="payload_map.js"></script>
 
-  <!-- Beep Sound -->
-  <audio id="beep-sound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3" preload="auto"></audio>
-
-  <script>
+    <script>
     function playSoundAndRun(wkonly = false) {
       document.getElementById('beep-sound').play();
       run(wkonly);
