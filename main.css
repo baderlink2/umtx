@@ -1,3 +1,15 @@
+
+body {
+    background-color: #f4f4f4;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+}
+button, input, select {
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    font-size: 14px;
+}
 :root{
     --text-color-primary: #fff;
     --text-color-secondary: #ccc;

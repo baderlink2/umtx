@@ -1,38 +1,22 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr" class="dark bg-gray-900 text-white">
+<html manifest="cache.appcache">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BADERLINK - UMTX Jailbreak</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    .fade-in {
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeInUp 1s forwards;
-    }
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-  </style>
+    <title>HELLO TO UMTX2 5.XX</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="main.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-<body class="flex flex-col min-h-screen">
 
-  <!-- BADERLINK Header -->
-  <header class="text-center py-6 bg-gray-800 shadow-md fade-in">
-    <h1 class="text-4xl font-bold tracking-wide text-blue-400">BADERLINK</h1>
-    <p class="text-sm text-gray-400 mt-1">Jailbreak Tool for Firmware 1.XX - 5.XX</p>
-  </header>
+<!-- body is set up as three rows: auto 1fr auto -->
+<body>
+    <header style="background-color: #222; color: #fff; padding: 10px; text-align: center; font-size: 24px; font-family: sans-serif;">
+        Baderlink
+    </header>
+    <!-- Row 1 -->
+    <div class="p-2">
+        <h1 class="text-center">OFFLINE Jailbreak UMTX V2 -1.XX-5.XX</h1>
+        <p class="text-center" id="top-bar-text">Current firmware: <span class="fw-bold" id="current-fw"></span></p>
 
-  <!-- Main Content -->
-  <main class="flex-grow flex flex-col items-center justify-center p-6 space-y-6 fade-in">
-    <div class="text-center">
-      <h2 class="text-2xl font-semibold">Current Status:</h2>
-      <p class="mt-2 text-lg">Firmware: <span id="current-fw" class="font-bold text-green-400"></span></p>
-    </div>
         <!-- This is absolute positioned to the body-->
         <div id="toast-container"></div>
     </div>
