@@ -1,25 +1,13 @@
-
-body {
-    background-color: #f4f4f4;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #333;
-}
-button, input, select {
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    padding: 8px 12px;
-    font-size: 14px;
-}
 :root{
-    --text-color-primary: #fff;
-    --text-color-secondary: #ccc;
-    --text-color-tertiary: #999;
-    --background-color-primary: #0c0c0f;
-    --surface-color-primary: #202125;
-    --surface-color-secondary: #15161a;
-    --surface-color-hover: #a2a2a6;
-    --text-color-primary-hover: #202020;
-    --text-color-secondary-hover: #444;
+    --text-color-primary: #ffffff; /* White */
+    --text-color-secondary: #e1e1e1; /* Light Grey */
+    --text-color-tertiary: #aaaaaa; /* Medium Grey */
+    --background-color-primary: #1f1f1f; /* Dark Grey */
+    --surface-color-primary: #0070d1; /* PS5 Blue */
+    --surface-color-secondary: #333333; /* Darker Surface for Toast */
+    --surface-color-hover: #0084f3; /* Lighter PS5 Blue */
+    --text-color-primary-hover: #ffffff; /* White */
+    --text-color-secondary-hover: #e1e1e1; /* Light Grey */
 
     font-size: 17px;
 }
@@ -45,7 +33,13 @@ input:focus {
 }
 
 a {
-    color: var(--text-color-secondary);
+    color: var(--surface-color-primary); /* Changed from --text-color-secondary */
+    text-decoration: none; /* Add this for cleaner look */
+}
+
+a:hover { /* Add hover effect */
+    color: var(--surface-color-hover); /* Lighter blue on hover */
+    text-decoration: underline;
 }
 
 a:active,
@@ -64,7 +58,7 @@ a:focus {
     cursor: pointer;
     line-height: 2.5rem;
     min-width: 5rem;
-    border-radius: 1.25rem;
+    border-radius: 0.5rem; /* Reduced border-radius for PS5 style */
     width: 50%;
     background-color: var(--surface-color-primary);
     border: none;
